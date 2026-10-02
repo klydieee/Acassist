@@ -42,14 +42,14 @@
 src/
 ├─ index.html
 ├─ styles/
-│  ├─ tokens.css          ← §3
-│  ├─ base.css            ← §4
-│  └─ components.css      ← §5
+│  ├─ tokens.css
+│  ├─ base.css
+│  └─ components.css
 ├─ assets/
 │  ├─ fonts/lexend-latin-wght-normal.woff2
 │  ├─ vendor/lucide.min.js
-│  ├─ decor/              ← 3D objects, WebP  (§8)
-│  └─ fallback/           ← pre-generated module JSON (Build Sheet MUST #5)
+│  ├─ decor/
+│  └─ fallback/
 └─ app.js
 ```
 
