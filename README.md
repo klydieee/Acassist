@@ -93,15 +93,14 @@ document.addEventListener('DOMContentLoaded', renderIcons);
 ## 3. `styles/tokens.css`
 
 ```css
-/* ============================================================
-   Acassist "Midnight Glass" — design tokens
+/* Acassist "Midnight Glass" — design tokens
    Semantic names follow shadcn/ui so shadcn & Basecoat themes
-   are drop-in compatible. Colors are plain CSS colors (no hsl(var())).
-   ============================================================ */
+   are drop-in compatible. Colors are plain CSS colors (no hsl(var())). */
+
 :root {
   color-scheme: dark;
 
-  /* ── Primitives ───────────────────────────────────────── */
+  /* Primitives */
   /* ink: the deep navy canvas */
   --ink-950:#040720; --ink-900:#070B2E; --ink-850:#0A1040;
   --ink-800:#0E1752; --ink-700:#17226E;
@@ -120,7 +119,7 @@ document.addEventListener('DOMContentLoaded', renderIcons);
   /* neutrals */
   --white:#FFFFFF; --periwinkle-300:#A9AED6;   /* muted text, AA-safe on glass */
 
-  /* ── Semantic (shadcn/ui-compatible) ──────────────────── */
+  /* Semantic (shadcn/ui-compatible) */
   --background:#070B2E;                         /* = --ink-900 */
   --foreground:#F4F5FF;
   --card:var(--glass-fill);
@@ -150,13 +149,13 @@ document.addEventListener('DOMContentLoaded', renderIcons);
   --sidebar-accent:var(--accent);        --sidebar-accent-foreground:var(--white);
   --sidebar-border:var(--border);        --sidebar-ring:var(--ring);
 
-  /* ── Brand additions: state colors for TEXT/ICONS on dark ─ */
+  /* Brand additions: state colors for TEXT/ICONS on dark */
   --success:var(--mint-400);
   --warning:var(--amber-400);
   --danger:var(--rose-400);
   --info:var(--azure-300);
 
-  /* ── Glass ────────────────────────────────────────────── */
+  /* Glass */
   --glass-fill:rgba(255,255,255,.08);
   --glass-fill-strong:rgba(255,255,255,.12);
   --glass-solid:#1B2260;                 /* opaque stand-ins used in lite mode */
@@ -164,7 +163,7 @@ document.addEventListener('DOMContentLoaded', renderIcons);
   --glass-filter:blur(16px) saturate(140%);
   --selected-fill:rgba(61,177,255,.18);
 
-  /* ── Gradients ────────────────────────────────────────── */
+  /* Gradients */
   --grad-primary:linear-gradient(100deg,var(--violet-500) 0%,var(--indigo-500) 100%);
   --grad-edge:linear-gradient(155deg,var(--orchid-500) 0%,rgba(200,75,221,0) 38%,
               rgba(27,140,255,0) 62%,var(--azure-500) 100%);   /* magenta → cyan rim */
@@ -174,12 +173,12 @@ document.addEventListener('DOMContentLoaded', renderIcons);
     radial-gradient(40% 35% at 72% 8%,rgba(200,75,221,.16),transparent 70%),
     var(--ink-900);
 
-  /* ── Elevation ────────────────────────────────────────── */
+  /* Elevation */
   --shadow-1:0 8px 24px rgba(2,4,24,.45);
   --shadow-2:0 24px 60px rgba(2,4,24,.55);
   --glow-primary:0 8px 28px rgba(139,46,255,.45);
 
-  /* ── Type (Lexend, self-hosted) ───────────────────────── */
+  /* Type (Lexend, self-hosted) */
   --font-sans:"Lexend",ui-sans-serif,system-ui,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
   --font-mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
   --text-xs:.8125rem;  --text-sm:.9375rem; --text-base:1.0625rem; --text-lg:1.25rem;
@@ -187,7 +186,7 @@ document.addEventListener('DOMContentLoaded', renderIcons);
   --leading-tight:1.15; --leading-snug:1.3; --leading-body:1.55; --leading-lesson:1.7;
   --tracking-heading:-.015em;
 
-  /* ── Space, radius, sizes ─────────────────────────────── */
+  /* Space, radius, sizes */
   --space-1:.25rem; --space-2:.5rem;  --space-3:.75rem; --space-4:1rem;
   --space-5:1.25rem; --space-6:1.5rem; --space-8:2rem;   --space-10:2.5rem;
   --space-12:3rem;  --space-16:4rem;
@@ -198,13 +197,13 @@ document.addEventListener('DOMContentLoaded', renderIcons);
   --shell-max:72rem;         /* app chrome */
   --measure:62ch;            /* max line length for lessons */
 
-  /* ── Motion & layers ──────────────────────────────────── */
+  /* Motion & layers */
   --ease-out:cubic-bezier(.22,1,.36,1);
   --dur-1:120ms; --dur-2:200ms; --dur-3:360ms;
   --z-base:0; --z-sticky:10; --z-popover:20; --z-modal:30; --z-toast:40;
 }
 
-/* ── 3.1 Elementary mode (SHOULD): bigger type, bigger targets ──
+/* 3.1 Elementary mode (SHOULD): bigger type, bigger targets
    Set via  document.documentElement.dataset.grade = 'elementary'.
    Presentation only; never affects scoring. */
 :root[data-grade="elementary"] {
@@ -214,9 +213,9 @@ document.addEventListener('DOMContentLoaded', renderIcons);
   --radius:1.5rem;
 }
 
-/* ── 3.2 Light bulb moments for tokens that other modes override ── */
+/* 3.2 Light bulb moments for tokens that other modes override */
 
-/* ── 3.3 Lite mode: no backdrop blur, opaque glass ─────────────
+/* 3.3 Lite mode: no backdrop blur, opaque glass
    Auto: user prefers reduced transparency, or no backdrop-filter support.
    Manual: data-fx="lite" (Settings toggle + low-core auto-detect). */
 :root[data-fx="lite"] {
@@ -257,12 +256,11 @@ document.addEventListener('DOMContentLoaded', renderIcons);
 ## 4. `styles/base.css`
 
 ```css
-/* ============================================================
-   Acassist — base: font, reset, canvas, typography, layout
-   ============================================================ */
+/* Acassist — base: font, reset, canvas, typography, layout */
 
 /* Self-hosted variable font. Copy the `latin` wght file from
    node_modules/@fontsource-variable/lexend/files/ (check exact filename). */
+
 @font-face {
   font-family:"Lexend";
   font-style:normal;
@@ -293,7 +291,7 @@ body::before {
 a { color:var(--azure-300); text-underline-offset:.2em; }
 img { max-width:100%; display:block; }
 
-/* ── Typography ───────────────────────────────────────────── */
+/* Typography */
 h1,h2,h3 {
   margin:0; font-weight:700;
   line-height:var(--leading-tight);
@@ -321,10 +319,10 @@ p  { margin:0; }
 .lesson h2:first-child { margin-top:0; }
 .lesson p  { margin-top:var(--space-4); line-height:var(--leading-lesson); }
 
-/* ── Focus: always visible ────────────────────────────────── */
+/* Focus: always visible */
 :focus-visible { outline:3px solid var(--ring); outline-offset:3px; }
 
-/* ── Layout ───────────────────────────────────────────────── */
+/* Layout */
 .shell  { min-height:100vh; min-height:100dvh; display:grid; grid-template-rows:auto 1fr; }
 .topbar {
   display:flex; align-items:center; justify-content:space-between; gap:var(--space-4);
@@ -356,7 +354,7 @@ p  { margin:0; }
 .icon--sm { width:1rem; height:1rem; }
 .icon--lg { width:1.75rem; height:1.75rem; }
 
-/* ── Reduced motion ───────────────────────────────────────── */
+/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *,*::before,*::after {
     animation-duration:.01ms !important; animation-iteration-count:1 !important;
@@ -389,12 +387,10 @@ p  { margin:0; }
 ### 5.2 `styles/components.css`
 
 ```css
-/* ============================================================
-   Acassist — components
-   Flat, single-class selectors on purpose (no specificity fights).
-   ============================================================ */
+/* Acassist — components
+   Flat, single-class selectors on purpose (no specificity fights). */
 
-/* ── Glass surface ────────────────────────────────────────── */
+/* Glass surface */
 .glass {
   position:relative; isolation:isolate;
   border-radius:var(--radius-xl);
@@ -430,7 +426,7 @@ p  { margin:0; }
   pointer-events:none;
 }
 
-/* ── Button ───────────────────────────────────────────────── */
+/* Button─ */
 .btn {
   --h:var(--hit-min);
   display:inline-flex; align-items:center; justify-content:center; gap:var(--space-2);
@@ -458,7 +454,7 @@ p  { margin:0; }
 .btn--ghost:hover { color:var(--foreground); background:var(--muted); filter:none; }
 .btn--danger { background:var(--destructive); color:var(--destructive-foreground); box-shadow:none; }
 
-/* ── Input ────────────────────────────────────────────────── */
+/* Input */
 .input {
   width:100%; min-height:var(--hit-min); padding:var(--space-2) var(--space-4);
   border-radius:var(--radius-md);
@@ -474,7 +470,7 @@ textarea.input { min-height:7rem; resize:vertical; padding-top:var(--space-3); }
 .label { display:block; margin-bottom:var(--space-2); font-weight:500; font-size:var(--text-sm); }
 .hint  { margin-top:var(--space-2); color:var(--muted-foreground); font-size:var(--text-sm); }
 
-/* ── Option (radio card) — multiple choice & true/false ─────
+/* Option (radio card) — multiple choice & true/false
    Sibling structure (input + label) so no :has() is needed on older WebKitGTK.
    NO backdrop-filter on options: fill only (perf). */
 .option-list        { display:grid; gap:var(--space-3); }
@@ -514,14 +510,14 @@ textarea.input { min-height:7rem; resize:vertical; padding-top:var(--space-3); }
 .option[data-state="incorrect"] { border-color:var(--danger);  box-shadow:inset 0 0 0 1px var(--danger); }
 .option[data-state="incorrect"] .option__state { color:var(--danger); }
 
-/* ── Progress ─────────────────────────────────────────────── */
+/* Progress─ */
 .progress { height:.625rem; border-radius:var(--radius-full); background:rgba(255,255,255,.14); overflow:hidden; }
 .progress > span {
   display:block; height:100%; border-radius:inherit; background:var(--grad-primary);
   transition:width var(--dur-3) var(--ease-out);
 }
 
-/* ── Chip (connection status etc.) ────────────────────────── */
+/* Chip (connection status etc.) */
 .chip {
   display:inline-flex; align-items:center; gap:var(--space-2);
   padding:.375rem .875rem; border-radius:var(--radius-full);
@@ -533,7 +529,7 @@ textarea.input { min-height:7rem; resize:vertical; padding-top:var(--space-3); }
 .chip[data-conn="online"]  { --chip-bg:rgba(61,177,255,.14);  --chip-fg:var(--azure-300);  --chip-ring:rgba(61,177,255,.45); }
 .chip--success { --chip-bg:rgba(61,220,151,.14); --chip-fg:var(--success); --chip-ring:rgba(61,220,151,.45); }
 
-/* ── Alert (inline; replaces toast/dialog for v1) ─────────── */
+/* Alert (inline; replaces toast/dialog for v1)─ */
 .alert {
   display:flex; gap:var(--space-3); align-items:flex-start;
   padding:var(--space-4) var(--space-5); border-radius:var(--radius-lg);
@@ -546,7 +542,7 @@ textarea.input { min-height:7rem; resize:vertical; padding-top:var(--space-3); }
 .alert[data-tone="success"] { --alert-ring:var(--success); --alert-icon:var(--success); }
 .alert[data-tone="info"]    { --alert-ring:var(--info);    --alert-icon:var(--info); }
 
-/* ── Score ring (SHOULD). Number is the MUST; ring is garnish.
+/* Score ring (SHOULD). Number is the MUST; ring is garnish.
    JS sets --pct (0–100); a count-up tween is the one "orchestrated moment". */
 .score-ring {
   --pct:0; position:relative; display:grid; place-items:center;
