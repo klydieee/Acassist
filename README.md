@@ -656,58 +656,6 @@ If the renderer lane agrees, set `document.documentElement.dataset.grade = modul
 | 6 | Flashcards | SHOULD | centered |
 | 7 | Settings (performance mode) | SHOULD | left |
 
-**1 · Home (hero moment: allowed decor)**
-
-```
-┌──────────────────────────────────────────────────────────────┐
-│ ◆ Acassist                          (⌁ Offline · everything works)
-│                                                              │
-│   ◯ sphere                                      ◇ cube       │
-│                  ┌────────────────────────┐                  │
-│                  │  Lessons that work     │                  │
-│                  │  without Wi-Fi         │   (display, centered)
-│                  │  Open a module once,   │                  │
-│                  │  use it anywhere.      │   (lede)         │
-│                  │                        │                  │
-│                  │  [   Open a module   ] │   (btn--lg block)│
-│                  │   Recent modules       │   (ghost list)   │
-│                  └────────────────────────┘                  │
-│        ◌ torus                                               │
-└──────────────────────────────────────────────────────────────┘
-```
-
-**3 · Quiz-take (working screen: no decor)**
-
-```
-┌──────────────────────────────────────────────────────────────┐
-│ ‹ Photosynthesis Basics                (⌁ Offline · everything works)
-│                                                              │
-│            ┌──────────── .card .column ───────────┐          │
-│            │ Question 3 of 10        ▓▓▓░░░░░░░   │          │
-│            │                                      │          │
-│            │ Which gas do plants take in?         │          │
-│            │                                      │          │
-│            │ ┌ ○  Oxygen ─────────────────────┐   │          │
-│            │ ├ ◉  Carbon Dioxide ─────────────┤   │ selected │
-│            │ ├ ○  Nitrogen ───────────────────┤   │          │
-│            │ └ ○  Hydrogen ───────────────────┘   │          │
-│            │                    [ Next question ] │          │
-│            └──────────────────────────────────────┘          │
-└──────────────────────────────────────────────────────────────┘
-```
-
-**4 · Result (one orchestrated moment: count-up + ring)**
-
-```
-            ┌────────────────────────────────┐
-            │             ◜ 80 ◝             │   .score-ring
-            │          8 of 10 correct       │   h1
-            │  Scored on this device. No     │   lede
-            │  connection needed.            │
-            │  [ Review answers ] [ Try again ]│  primary / secondary
-            └────────────────────────────────┘
-```
-
 ---
 
 ## 7. Icons: Lucide (vanilla)
