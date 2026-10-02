@@ -8,7 +8,7 @@
 
 ## 0. Read this first (four decisions baked in)
 
-1. **Vanilla, not React.** The Build Sheet locks the UI to raw HTML/CSS/vanilla JS in the Tauri webview. `shadcn/ui` and `lucide-react` are React-only, so they are **not** in the MUST path. Instead:
+1. **Vanilla** The Build Sheet locks the UI to raw HTML/CSS/vanilla JS in the Tauri webview. `shadcn/ui` and `lucide-react` are React-only, so they are **not** in the MUST path. Instead:
    - Tokens use **shadcn's exact variable names** (`--background`, `--primary`, `--ring`…), so shadcn/Basecoat themes drop in later.
    - Icons come from vanilla **`lucide`**, bundled locally.
    - **Basecoat** (shadcn-style components for plain HTML) is optional. See §9.
