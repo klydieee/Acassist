@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Acassist — sample</title>
+<!-- Sample only: the real app self-hosts Lexend (no CDN). Fallback stack keeps it readable. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  color-scheme:dark;
+  --ink-900:#070B2E;--ink-850:#0A1040;
+  --violet-300:#C9A6FF;--violet-500:#8B2EFF;--indigo-500:#3A4BFF;
+  --azure-300:#7CCBFF;--azure-400:#3DB1FF;--azure-500:#1B8CFF;--orchid-500:#C84BDD;
+  --mint-400:#3DDC97;--rose-400:#FF5C7A;--periwinkle-300:#A9AED6;
+  --background:var(--ink-900);--foreground:#F4F5FF;--muted:rgba(255,255,255,.06);
+  --muted-foreground:var(--periwinkle-300);--secondary:rgba(255,255,255,.08);
+  --input:rgba(255,255,255,.42);--border:rgba(255,255,255,.16);--ring:var(--azure-300);
+  --success:var(--mint-400);--danger:var(--rose-400);
+  --glass-fill:rgba(255,255,255,.08);--glass-fill-strong:rgba(255,255,255,.12);
+  --glass-solid:#1B2260;--glass-solid-strong:#232B6E;
+  --glass-filter:blur(16px) saturate(140%);--selected-fill:rgba(61,177,255,.18);
+  --grad-primary:linear-gradient(100deg,var(--violet-500),var(--indigo-500));
+  --grad-edge:linear-gradient(155deg,var(--orchid-500) 0%,rgba(200,75,221,0) 38%,rgba(27,140,255,0) 62%,var(--azure-500) 100%);
+  --bg-mesh:radial-gradient(60% 50% at 16% 20%,rgba(124,34,240,.45),transparent 70%),radial-gradient(50% 45% at 88% 92%,rgba(27,140,255,.28),transparent 70%),radial-gradient(40% 35% at 72% 8%,rgba(200,75,221,.16),transparent 70%),var(--ink-900);
+  --shadow-1:0 8px 24px rgba(2,4,24,.45);--glow-primary:0 8px 28px rgba(139,46,255,.45);
+  --font-sans:"Lexend",ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;
+  --text-sm:.9375rem;--text-base:1.0625rem;--text-xl:1.5rem;--text-2xl:1.875rem;--text-3xl:2.375rem;
+  --radius-md:.875rem;--radius-lg:1.25rem;--radius-xl:1.75rem;--radius-full:999px;
+  --hit-min:44px;--ease-out:cubic-bezier(.22,1,.36,1);
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);box-sizing:border-box;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+:root[data-fx="lite"]{--glass-filter:none;--glass-fill:var(--glass-solid);--glass-fill-strong:var(--glass-solid-strong)}
+:root[data-fx="lite"] .decor{display:none}
+@media (prefers-reduced-transparency:reduce){:root{--glass-filter:none;--glass-fill:var(--glass-solid);--glass-fill-strong:var(--glass-solid-strong)}}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;min-height:100vh;font:400 var(--text-base)/1.55 var(--font-sans);color:var(--foreground);background:var(--background);-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:var(--bg-mesh);pointer-events:none}
+h1,h2{margin:0;font-weight:700;line-height:1.15;letter-spacing:-.015em;text-wrap:balance}
+h1{font-size:var(--text-2xl)}h2{font-size:var(--text-xl)}p{margin:0}
+.display{font-size:var(--text-3xl)}
+.lede{color:var(--muted-foreground);text-wrap:balance}.lede strong{color:var(--foreground);font-weight:500}
+.muted{color:var(--muted-foreground)}.small{font-size:var(--text-sm)}
+:focus-visible{outline:3px solid var(--ring);outline-offset:3px}
+.icon{width:1.25rem;height:1.25rem;flex:none;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.shell{min-height:100vh;display:grid;grid-template-rows:auto 1fr}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:1rem;width:100%;max-width:72rem;margin:0 auto;padding:1rem 1.5rem}
+.brand{display:flex;align-items:center;gap:.625rem;font-weight:700}
+.stage{display:grid;place-items:center;padding:1.5rem;position:relative;overflow:hidden}
+.column{width:100%;max-width:44rem;position:relative;z-index:1}
+.stack>*+*{margin-top:1rem}.center{text-align:center}
+.row{display:flex;align-items:center;gap:.75rem}.between{justify-content:space-between}.end{justify-content:flex-end}
+.card{position:relative;isolation:isolate;padding:2rem;border-radius:var(--radius-xl);background:var(--glass-fill);-webkit-backdrop-filter:var(--glass-filter);backdrop-filter:var(--glass-filter);box-shadow:var(--shadow-1)}
+.card::before{content:"";position:absolute;inset:0;padding:1px;border-radius:inherit;background:var(--grad-edge);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;min-height:var(--hit-min);padding:0 1.5rem;border:0;border-radius:var(--radius-lg);font:600 var(--text-base)/1 var(--font-sans);color:#fff;background:var(--grad-primary);box-shadow:var(--glow-primary),inset 0 1px 0 rgba(255,255,255,.25);cursor:pointer;transition:transform .12s var(--ease-out),filter .12s var(--ease-out)}
+.btn:hover{filter:brightness(1.1)}.btn:active{transform:translateY(1px) scale(.99)}
+.btn:disabled{opacity:.45;box-shadow:none;cursor:not-allowed;filter:none;transform:none}
+.btn--lg{min-height:56px;font-size:1.25rem}.btn--block{width:100%}
+.btn--secondary{background:var(--secondary);box-shadow:inset 0 0 0 1px var(--input)}
+.btn--ghost{background:transparent;color:var(--muted-foreground);box-shadow:none}
+.btn--ghost:hover{color:var(--foreground);background:var(--muted);filter:none}
+.input{width:100%;min-height:var(--hit-min);padding:.5rem 1rem;border-radius:var(--radius-md);border:1px solid var(--input);background:rgba(4,7,32,.45);color:var(--foreground);font:400 var(--text-base)/1.3 var(--font-sans)}
+.input::placeholder{color:var(--muted-foreground);opacity:1}
+.label{display:block;margin-bottom:.5rem;font-weight:500;font-size:var(--text-sm)}.hint{margin-top:.5rem;color:var(--muted-foreground);font-size:var(--text-sm)}
+.option-list{display:grid;gap:.75rem}.option-list--pair{grid-template-columns:1fr 1fr}
+.option-input{position:absolute;opacity:0;pointer-events:none}
+.option{display:flex;align-items:center;gap:1rem;min-height:var(--hit-min);padding:.75rem 1.25rem;border-radius:var(--radius-lg);border:1px solid var(--input);background:var(--glass-fill);cursor:pointer;transition:background .12s var(--ease-out),border-color .12s var(--ease-out)}
+.option:hover{background:var(--glass-fill-strong)}
+.option__mark{width:1.5rem;height:1.5rem;flex:none;border-radius:50%;border:2px solid var(--input)}
+.option-input:checked+.option{background:var(--selected-fill);border-color:var(--azure-300);box-shadow:inset 0 0 0 1px var(--azure-300)}
+.option-input:checked+.option .option__mark{border-color:var(--azure-300);background:var(--azure-300);box-shadow:inset 0 0 0 4px #243D6F}
+.option-input:focus-visible+.option{outline:3px solid var(--ring);outline-offset:3px}
+.progress{height:.625rem;border-radius:var(--radius-full);background:rgba(255,255,255,.14);overflow:hidden;flex:1;max-width:14rem}
+.progress>span{display:block;height:100%;border-radius:inherit;background:var(--grad-primary);transition:width .36s var(--ease-out)}
+.chip{display:inline-flex;align-items:center;gap:.5rem;padding:.375rem .875rem;border-radius:var(--radius-full);font:500 var(--text-sm)/1 var(--font-sans);color:var(--chip-fg);background:var(--chip-bg);box-shadow:inset 0 0 0 1px var(--chip-ring)}
+.chip[data-conn="offline"]{--chip-bg:rgba(166,107,255,.16);--chip-fg:var(--violet-300);--chip-ring:rgba(166,107,255,.45)}
+.chip[data-conn="online"]{--chip-bg:rgba(61,177,255,.14);--chip-fg:var(--azure-300);--chip-ring:rgba(61,177,255,.45)}
+.alert{display:flex;gap:.75rem;align-items:flex-start;padding:1rem 1.25rem;border-radius:var(--radius-lg);background:var(--glass-fill-strong);box-shadow:inset 0 0 0 1px var(--success)}
+.alert .icon{color:var(--success);margin-top:.15rem}
+.score-ring{--pct:0;position:relative;display:grid;place-items:center;width:11rem;aspect-ratio:1;margin:0 auto;border-radius:50%;background:conic-gradient(var(--azure-400) calc(var(--pct)*1%),rgba(255,255,255,.14) 0)}
+.score-ring::before{content:"";position:absolute;inset:.75rem;border-radius:50%;background:var(--ink-850)}
+.score-ring>*{position:relative;text-align:center}.score-num{font-size:var(--text-3xl);font-weight:700;line-height:1}
+.review{display:grid;gap:.5rem;text-align:left}
+.review li{display:flex;align-items:center;gap:.75rem;padding:.75rem 1rem;border-radius:var(--radius-md);background:var(--glass-fill)}
+.review .ok{color:var(--success)}.review .no{color:var(--danger)}.review b{font-weight:500;font-size:var(--text-sm);margin-left:auto;white-space:nowrap}
+.decor{position:absolute;pointer-events:none;user-select:none}
+:root[data-grade="elementary"]{--hit-min:56px;--text-sm:1.0625rem;--text-base:1.25rem;--text-xl:1.875rem;--text-2xl:2.25rem;--radius-lg:1.5rem}
+.stage{align-items:start}.stage[data-v="login"]{align-items:center}
+body:not([data-auth]) .authonly,body:not([data-role="teacher"]) .teacher-only{display:none}
+.column--wide{max-width:56rem}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.tile{padding:1.25rem;border-radius:var(--radius-lg);background:var(--glass-fill);border:1px solid var(--border)}
+.tile h3{margin:0;font-size:var(--text-base);font-weight:600}.tags{display:flex;gap:.5rem;flex-wrap:wrap}
+.btn--sm{padding:0 1rem;font-size:var(--text-sm)}
+.chip--ok{--chip-bg:rgba(61,220,151,.14);--chip-fg:var(--success);--chip-ring:rgba(61,220,151,.45)}
+select.input{appearance:none;padding-right:2.5rem;background-image:linear-gradient(45deg,transparent 50%,#A9AED6 50%),linear-gradient(135deg,#A9AED6 50%,transparent 50%);background-position:calc(100% - 1.4rem) 50%,calc(100% - 1.05rem) 50%;background-size:.35rem .35rem;background-repeat:no-repeat}
+select.input option{background:#121A5A;color:#F4F5FF}
+textarea.input{min-height:6rem;resize:vertical;padding-top:.75rem}
+.switch{appearance:none;flex:none;width:3.25rem;height:1.85rem;border-radius:999px;border:1px solid var(--input);background:rgba(255,255,255,.14);position:relative;cursor:pointer}
+.switch::after{content:"";position:absolute;top:.2rem;left:.25rem;width:1.3rem;height:1.3rem;border-radius:50%;background:#fff;transition:transform .2s var(--ease-out)}
+.switch:checked{background:var(--grad-primary);border-color:transparent}.switch:checked::after{transform:translateX(1.3rem)}
+.setting{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1rem 0;border-top:1px solid var(--border)}
+.divider{display:flex;align-items:center;gap:1rem;color:var(--muted-foreground);font-size:var(--text-sm)}.divider::before,.divider::after{content:"";flex:1;height:1px;background:var(--border)}
+.alert--info{box-shadow:inset 0 0 0 1px var(--azure-300)}.alert--info .icon{color:var(--azure-300)}
+.flip{width:100%;min-height:12rem;display:grid;place-items:center;padding:2rem;border-radius:var(--radius-lg);background:var(--glass-fill-strong);border:1px solid var(--input);color:var(--foreground);font:600 var(--text-xl)/1.3 var(--font-sans);cursor:pointer}
+.toast{position:fixed;left:50%;bottom:calc(1.5rem + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:40;max-width:calc(100% - 2rem)}
+.lesson{max-width:62ch}.lesson h2{margin-top:2rem}.lesson h2:first-child{margin-top:0}.lesson p{margin-top:1rem;line-height:1.7}
+@media (max-width:560px){.grid2{grid-template-columns:1fr}}
+.card--flat{-webkit-backdrop-filter:none;backdrop-filter:none}
+button.brand{color:var(--foreground);font:700 var(--text-base)/1 var(--font-sans);background:none;border:0;padding:.25rem .5rem;border-radius:var(--radius-md);cursor:pointer}
+.act{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;padding:1rem 1.25rem;border-radius:var(--radius-lg);background:var(--glass-fill);border:1px solid var(--border)}
+.act__main{flex:1;min-width:14rem}.act__title{font-weight:600}.act .progress{max-width:none;margin-top:.625rem}
+.chip--info{--chip-bg:rgba(61,177,255,.14);--chip-fg:var(--azure-300);--chip-ring:rgba(61,177,255,.45)}
+.chip--due{--chip-bg:rgba(255,194,61,.12);--chip-fg:#FFC23D;--chip-ring:rgba(255,194,61,.4)}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem}
+.subj{display:flex;align-items:center;gap:1rem;width:100%;min-height:var(--hit-min);padding:1rem 1.25rem;border-radius:var(--radius-lg);border:1px solid var(--input);background:var(--glass-fill);color:var(--foreground);font:inherit;text-align:left;cursor:pointer;transition:background .12s var(--ease-out)}
+.subj:hover{background:var(--glass-fill-strong)}.subj b{display:block;font-weight:600}
+.subj__badge{flex:none;display:grid;place-items:center;width:2.75rem;height:2.75rem;border-radius:.875rem;background:var(--grad-primary);font-weight:700;font-size:var(--text-sm)}
+.crumbs{display:flex;align-items:center;gap:.5rem;color:var(--muted-foreground);font-size:var(--text-sm)}
+@media (max-width:560px){.grid3{grid-template-columns:1fr}}
+.topbar{position:relative;z-index:30}.navwrap{position:relative}
+.brand .chev{color:var(--muted-foreground);transition:transform .2s var(--ease-out)}
+.brand[aria-expanded="true"] .chev{transform:rotate(180deg)}
+body:not([data-auth]) button.brand{pointer-events:none}body:not([data-auth]) .chev,body:not([data-auth]) .menu{display:none}
+.menu{position:absolute;top:calc(100% + .375rem);left:0;z-index:30;width:26rem;max-width:calc(100vw - 3rem);max-height:calc(100vh - 6rem);overflow:auto;padding:.75rem;border-radius:var(--radius-xl);background:#121A5A;border:1px solid var(--border);box-shadow:0 24px 60px rgba(2,4,24,.55)}
+.mi{display:flex;align-items:center;justify-content:space-between;gap:.5rem;width:100%;min-height:calc(var(--hit-min) - 4px);padding:.375rem .75rem;border:0;border-radius:var(--radius-md);background:transparent;color:var(--foreground);font:500 var(--text-sm)/1.2 var(--font-sans);text-align:left;cursor:pointer}
+.mi:hover{background:var(--glass-fill-strong)}.mi .icon{color:var(--muted-foreground)}
+.mi--s{justify-content:flex-start;gap:.625rem}.mi .subj__badge{width:1.75rem;height:1.75rem;border-radius:.5rem;font-size:.6875rem}
+.mh{margin:.75rem .75rem .25rem;color:var(--muted-foreground);font-size:.8125rem;font-weight:500}
+.mgrid,.mfoot{display:grid;grid-template-columns:1fr 1fr;gap:.125rem}.mfoot{margin-top:.75rem;padding-top:.5rem;border-top:1px solid var(--border)}
+[hidden]{display:none!important}
+@media (max-width:560px){.card{padding:1.5rem}.option-list--pair{grid-template-columns:1fr}.decor{opacity:.7}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-wifi" viewBox="0 0 24 24"><path d="M12 20h.01M2 8.82a15 15 0 0 1 20 0M5 12.859a10 10 0 0 1 14 0M8.5 16.429a5 5 0 0 1 7 0"/></symbol>
+  <symbol id="i-wifi-off" viewBox="0 0 24 24"><path d="M12 20h.01M8.5 16.429a5 5 0 0 1 7 0M5 12.859a10 10 0 0 1 5.17-2.69M19 12.859a10 10 0 0 0-2.007-1.523M2 8.82a15 15 0 0 1 4.177-2.643M22 8.82a15 15 0 0 0-11.288-3.764M2 2l20 20"/></symbol>
+  <symbol id="i-cap" viewBox="0 0 24 24"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0zM22 10v6M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></symbol>
+  <symbol id="i-ok" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="i-no" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6M9 9l6 6"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+  <symbol id="i-redo" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8M3 3v5h5"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 24 24"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"/></symbol>
+  <symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0zM20 3v4M22 5h-4M4 17v2M5 18H3"/></symbol>
+  <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M10 5H3M12 19H3M14 3v4M16 17v4M21 12h-9M21 19h-5M21 5h-7M8 10v4M8 12H3"/></symbol>
+  <symbol id="i-out" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+</svg>
+
+<div class="shell">
+  <header class="topbar">
+    <div class="navwrap" id="navwrap">
+      <button class="brand" id="brandbtn" type="button" aria-expanded="false" aria-controls="menu" aria-label="Acassist menu"><svg class="icon icon--lg" style="width:1.75rem;height:1.75rem;color:var(--azure-300)"><use href="#i-cap"/></svg>Acassist<svg class="icon icon--sm chev"><use href="#i-chev"/></svg></button>
+      <div class="menu" id="menu" hidden>
+        <input class="input" id="mfind" type="search" placeholder="Search subjects and modules" aria-label="Search subjects and modules" autocomplete="off">
+        <ul class="review" id="mfound" hidden style="list-style:none;margin:.5rem 0 0;padding:0"></ul>
+        <p class="mh">Active now</p>
+        <button class="mi" data-go="home" type="button"><span>Home</span><span class="muted small">Welcome back</span></button>
+        <button class="mi" data-act="quiz" type="button"><span>Continue quiz</span><span class="muted small">Science · 1 of 3</span></button>
+        <button class="mi" data-todo type="button"><span>Fractions quiz</span><span class="muted small">Math · due Friday</span></button>
+        <button class="mi" data-go="flash" type="button"><span>Review flashcards</span><span class="muted small">3 cards</span></button>
+        <p class="mh">Subjects</p>
+        <div class="mgrid" id="msubj"></div>
+        <p class="mh">Go to</p>
+        <div class="mgrid">
+          <button class="mi" data-todo type="button">All lessons</button><button class="mi" data-todo type="button">All quizzes</button>
+          <button class="mi" data-go="flash" type="button">Flashcards</button><button class="mi" data-todo type="button">Saved on this device</button>
+          <button class="mi" data-todo="Opening a module file isn't wired up in this sample." type="button">Open a module file</button>
+        </div>
+        <div class="teacher-only"><p class="mh">Teacher</p><div class="mgrid"><button class="mi" data-go="teacher" type="button">Create a module</button><button class="mi" data-todo type="button">My modules</button></div></div>
+        <div class="mfoot"><button class="mi" data-go="settings" type="button"><span>Settings</span><svg class="icon"><use href="#i-sliders"/></svg></button><button class="mi" id="signout" type="button"><span>Sign out</span><svg class="icon"><use href="#i-out"/></svg></button></div>
+      </div>
+    </div>
+    <div class="row">
+      <span class="chip" id="chip" data-conn="offline"><svg class="icon"><use href="#i-wifi-off"/></svg><span>Offline · everything works</span></span>
+    </div>
+  </header>
+
+  <main class="stage">
+    <!-- 1 · Home -->
+    <section id="login" class="column center">
+      <svg class="decor" style="top:-2%;left:2%" width="120" height="120" viewBox="0 0 120 120" aria-hidden="true"><defs><radialGradient id="ga" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#9ADBFF"/><stop offset=".35" stop-color="#1B8CFF"/><stop offset="1" stop-color="#0A3FB0"/></radialGradient></defs><circle cx="60" cy="60" r="52" fill="url(#ga)"/><ellipse cx="42" cy="38" rx="14" ry="9" fill="#fff" opacity=".55" transform="rotate(-30 42 38)"/></svg>
+      <svg class="decor" style="top:4%;right:0" width="140" height="140" viewBox="0 0 140 140" aria-hidden="true"><defs><linearGradient id="gc" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8FD6FF"/><stop offset=".5" stop-color="#1B8CFF"/><stop offset="1" stop-color="#1230C8"/></linearGradient></defs><rect x="18" y="18" width="104" height="104" rx="26" fill="url(#gc)" transform="rotate(14 70 70)"/><rect x="30" y="28" width="46" height="14" rx="7" fill="#fff" opacity=".5" transform="rotate(14 70 70)"/></svg>
+      <svg class="decor" style="bottom:2%;left:6%" width="96" height="96" viewBox="0 0 96 96" aria-hidden="true"><defs><radialGradient id="go" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#F7C6FA"/><stop offset=".4" stop-color="#C84BDD"/><stop offset="1" stop-color="#6A1A9A"/></radialGradient></defs><circle cx="48" cy="48" r="42" fill="url(#go)"/><ellipse cx="34" cy="30" rx="11" ry="7" fill="#fff" opacity=".5" transform="rotate(-30 34 30)"/></svg>
+      <div class="card stack">
+        <h1 class="display">Lessons that work without Wi-Fi</h1>
+        <p class="lede">Sign in to see your modules. <strong>Quizzes are scored on this device</strong>, so a lost connection never stops a test.</p>
+        <div class="option-list option-list--pair" role="radiogroup" aria-label="I am a">
+          <input class="option-input" type="radio" name="role" id="r-s" value="student" checked><label class="option" for="r-s"><span class="option__mark"></span><span>Student</span></label>
+          <input class="option-input" type="radio" name="role" id="r-t" value="teacher"><label class="option" for="r-t"><span class="option__mark"></span><span>Teacher</span></label>
+        </div>
+        <div style="text-align:left"><label class="label" for="em">Email</label><input class="input" id="em" type="email" placeholder="name@school.edu" autocomplete="off"></div>
+        <div style="text-align:left"><label class="label" for="pw">Password</label><input class="input" id="pw" type="password" placeholder="Your password" autocomplete="off"></div>
+        <div class="row end"><button class="btn btn--ghost btn--sm" data-todo="Password reset isn't wired up in this sample." type="button">Forgot password?</button></div>
+        <button class="btn btn--lg btn--block" id="signin" type="button">Sign in</button>
+        <div class="divider">or</div>
+        <button class="btn btn--secondary btn--block" id="guest" type="button">Continue without an account</button>
+        <button class="btn btn--ghost btn--block" data-todo="Account creation isn't wired up in this sample." type="button">Create an account</button>
+        <p class="muted small">Sample sign-in: any details work. Accounts and roles are on the roadmap.</p>
+      </div>
+    </section>
+
+    <!-- Home: activities / subjects / find your way -->
+    <section id="home" class="column column--wide stack" hidden>
+      <div class="card stack">
+        <div class="row between" style="flex-wrap:wrap">
+          <div><h1>Welcome back</h1><p class="lede">Here's what you're working on.</p></div>
+          <button class="btn btn--secondary" data-todo="Opening a module file isn't wired up in this sample." type="button"><svg class="icon"><use href="#i-folder"/></svg>Open a module file</button>
+        </div>
+        <div class="stack" style="--stack-gap:.75rem">
+          <div class="act"><div class="act__main"><div class="row" style="flex-wrap:wrap;gap:.5rem"><span class="act__title">Photosynthesis Basics quiz</span><span class="chip chip--info">In progress</span></div><p class="muted small">Science · 1 of 3 answered</p><div class="progress" role="progressbar" aria-label="Quiz progress" aria-valuemin="0" aria-valuemax="3" aria-valuenow="1"><span style="width:33%"></span></div></div><button class="btn btn--sm" data-act="quiz" type="button">Continue quiz</button></div>
+          <div class="act"><div class="act__main"><div class="row" style="flex-wrap:wrap;gap:.5rem"><span class="act__title">Fractions: Halves and Quarters quiz</span><span class="chip chip--due">Due Friday</span></div><p class="muted small">Mathematics · 5 questions</p></div><button class="btn btn--secondary btn--sm" data-todo type="button">Start quiz</button></div>
+          <div class="act"><div class="act__main"><div class="row" style="flex-wrap:wrap;gap:.5rem"><span class="act__title">Photosynthesis flashcards</span><span class="chip chip--ok">Ready offline</span></div><p class="muted small">Science · 3 cards to review</p></div><button class="btn btn--secondary btn--sm" data-go="flash" type="button">Review cards</button></div>
+        </div>
+      </div>
+      <div class="card card--flat stack">
+        <div><h2>Subjects</h2><p class="lede">Everything saved on this device, grouped by subject.</p></div>
+        <div class="grid3" id="subjgrid"></div>
+      </div>
+      <div class="card card--flat stack">
+        <div><h2>Find your way</h2><p class="lede">Search, or jump straight to what you need.</p></div>
+        <div><label class="label" for="find">Search subjects and modules</label><input class="input" id="find" type="search" placeholder="Try fractions or science" autocomplete="off"></div>
+        <ul class="review" id="found" hidden style="list-style:none;margin:0;padding:0"></ul>
+        <div class="grid3">
+          <button class="btn btn--secondary" data-act="quiz" type="button">Continue where I left off</button>
+          <button class="btn btn--secondary" data-todo type="button">All lessons</button>
+          <button class="btn btn--secondary" data-todo type="button">All quizzes</button>
+          <button class="btn btn--secondary" data-go="flash" type="button">Flashcards</button>
+          <button class="btn btn--secondary" data-todo type="button">Saved on this device</button>
+          <button class="btn btn--secondary" data-go="settings" type="button">Settings</button>
+        </div>
+      </div>
+      <div class="card card--flat stack teacher-only">
+        <h2>Make a new module</h2>
+        <p class="lede">AI drafts it online. You review everything before it's saved.</p>
+        <div class="row"><button class="btn" data-go="teacher" type="button"><svg class="icon"><use href="#i-sparkles"/></svg>Create a module</button><button class="btn btn--secondary" data-todo type="button">My modules</button></div>
+      </div>
+    </section>
+
+    <!-- Subject detail -->
+    <section id="subject" class="column column--wide" hidden>
+      <div class="card stack">
+        <nav class="crumbs" aria-label="Breadcrumb"><button class="btn btn--ghost btn--sm" data-go="home" type="button">Home</button><span aria-hidden="true">/</span><span id="scrumb" aria-current="page"></span></nav>
+        <h1 id="sname"></h1>
+        <div class="grid2" id="smods"></div>
+        <div class="row"><button class="btn btn--secondary" data-todo="Opening a module file isn't wired up in this sample." type="button"><svg class="icon"><use href="#i-folder"/></svg>Open a module file</button></div>
+      </div>
+    </section>
+
+    <!-- Lesson -->
+    <section id="lesson" class="column" hidden>
+      <div class="card stack">
+        <div class="row between"><button class="btn btn--ghost btn--sm" data-go="home" type="button"><svg class="icon"><use href="#i-back"/></svg>Photosynthesis Basics</button><span class="muted small">Lesson</span></div>
+        <article class="lesson">
+          <h2>What is photosynthesis?</h2>
+          <p>Plants make their own food from sunlight, water and a gas from the air.</p>
+          <h2>Where does it happen?</h2>
+          <p>Mostly in the leaves. They hold a green pigment that catches the light.</p>
+        </article>
+        <div class="row end" style="flex-wrap:wrap"><button class="btn btn--secondary" data-go="flash" type="button">Study flashcards</button><button class="btn" data-act="quiz" type="button">Take the quiz</button></div>
+      </div>
+    </section>
+
+    <!-- Teacher: create module -->
+    <section id="teacher" class="column stack" hidden>
+      <div class="card stack">
+        <div class="row between"><button class="btn btn--ghost btn--sm" data-go="home" type="button"><svg class="icon"><use href="#i-back"/></svg>Home</button><span class="chip" data-conn="online"><svg class="icon"><use href="#i-wifi"/></svg>Needs a connection</span></div>
+        <h1>Create a module</h1>
+        <p class="lede">Pick a template, add your topic, then review what the AI drafts.</p>
+        <div class="alert alert--info" id="offnote" hidden><svg class="icon"><use href="#i-info"/></svg><p>AI drafting needs a connection. Reconnect to generate a module.</p></div>
+        <div><label class="label" for="tpl">Template</label><select class="input" id="tpl"><option>Lesson + 5-question quiz</option><option>Quiz only</option><option>Lesson only</option><option>Flashcard set</option></select></div>
+        <div><label class="label" for="topic">Topic</label><input class="input" id="topic" placeholder="e.g. Photosynthesis" autocomplete="off"></div>
+        <div class="grid2"><div><label class="label" for="gl">Grade level</label><select class="input" id="gl"><option>Elementary</option><option>Junior high</option><option>Senior high</option></select></div>
+        <div><label class="label" for="nq">Questions</label><select class="input" id="nq"><option>3</option><option selected>5</option><option>10</option></select></div></div>
+        <div><label class="label" for="notes">Your notes (optional)</label><textarea class="input" id="notes" placeholder="Paste or type content you're allowed to teach from."></textarea><p class="hint">Acassist doesn't include DepEd learning materials. Bring your own content.</p></div>
+        <div class="row end"><button class="btn btn--secondary" data-go="home" type="button">Cancel</button><button class="btn" id="gen" type="button"><svg class="icon"><use href="#i-sparkles"/></svg>Generate with AI</button></div>
+      </div>
+      <div class="card stack" id="preview" hidden>
+        <h2>Draft: Photosynthesis Basics</h2>
+        <p class="lede">1 lesson · 3 questions. Check them, then save.</p>
+        <ul class="review" style="list-style:none;margin:0;padding:0"><li><span>Which gas do plants take in?</span><b>Multiple choice</b></li><li><span>Photosynthesis happens mostly in the roots.</span><b>True or false</b></li><li><span>What green pigment captures sunlight?</span><b>Identification</b></li></ul>
+        <div class="row end"><button class="btn btn--secondary" data-todo type="button">Edit questions</button><button class="btn" data-todo="Saving isn't wired up in this sample." type="button">Save module</button></div>
+      </div>
+    </section>
+
+    <!-- Flashcards -->
+    <section id="flash" class="column" hidden>
+      <div class="card stack center">
+        <div class="row between"><button class="btn btn--ghost btn--sm" data-go="home" type="button"><svg class="icon"><use href="#i-back"/></svg>Home</button><span class="muted small" id="fcount"></span></div>
+        <button class="flip" id="flip" type="button" aria-live="polite"></button>
+        <p class="muted small" id="fside"></p>
+        <div class="row" style="justify-content:center;flex-wrap:wrap"><button class="btn btn--secondary" id="fprev" type="button">Previous</button><button class="btn" id="fflip" type="button">Flip card</button><button class="btn btn--secondary" id="fnext" type="button">Next</button></div>
+      </div>
+    </section>
+
+    <!-- Settings -->
+    <section id="settings" class="column" hidden>
+      <div class="card stack">
+        <div class="row between"><button class="btn btn--ghost btn--sm" data-go="home" type="button"><svg class="icon"><use href="#i-back"/></svg>Home</button></div>
+        <h1>Settings</h1>
+        <div>
+          <div class="setting"><div><label class="label" for="s-lite" style="margin:0">Performance mode</label><p class="hint" style="margin:0">Turns off the frosted blur. Use it if the app feels slow.</p></div><input class="switch" type="checkbox" role="switch" id="s-lite"></div>
+          <div class="setting"><div><label class="label" for="s-large" style="margin:0">Large text and buttons</label><p class="hint" style="margin:0">Bigger targets, easier to read.</p></div><input class="switch" type="checkbox" role="switch" id="s-large"></div>
+          <div class="setting"><label class="label" for="lang" style="margin:0">Language</label><select class="input" id="lang" style="width:auto"><option>English</option><option>Filipino</option></select></div>
+          <div class="setting"><div><span class="label" style="margin:0">Saved modules</span><p class="hint" style="margin:0">Remove modules stored on this device.</p></div><button class="btn btn--secondary btn--sm" data-todo type="button">Clear modules</button></div>
+        </div>
+        <div class="alert alert--info"><svg class="icon"><use href="#i-info"/></svg><p>Scoring happens on this device. Answers are not stored in readable form inside module files.</p></div>
+      </div>
+    </section>
+
+    <!-- 2 · Quiz -->
+    <section id="quiz" class="column" hidden>
+      <div class="card stack" aria-labelledby="q-prompt">
+        <div class="row between">
+          <button class="btn btn--ghost" id="exit" data-go="home" type="button" style="min-height:36px;padding:0 .75rem"><svg class="icon"><use href="#i-back"/></svg>Photosynthesis Basics</button>
+          <div class="progress" id="prog" role="progressbar" aria-valuemin="0" aria-valuemax="3" aria-valuenow="1" aria-label="Question 1 of 3"><span></span></div>
+        </div>
+        <p class="muted small" id="qcount"></p>
+        <h2 id="q-prompt"></h2>
+        <div id="qbody"></div>
+        <div class="row end"><button class="btn" id="next" type="button" disabled>Next question</button></div>
+      </div>
+    </section>
+
+    <!-- 3 · Result -->
+    <section id="result" class="column center" hidden>
+      <div class="card stack">
+        <div class="score-ring" id="ring"><div><div class="score-num" id="num">0</div><div class="muted small">percent</div></div></div>
+        <h1 id="rtitle"></h1>
+        <div class="alert" style="text-align:left"><svg class="icon"><use href="#i-ok"/></svg><p>Scored on this device. No connection needed.</p></div>
+        <ul class="review" id="review" style="list-style:none;margin:0;padding:0"></ul>
+        <div class="row" style="justify-content:center;flex-wrap:wrap;padding-top:.5rem">
+          <button class="btn" id="retry" type="button"><svg class="icon"><use href="#i-redo"/></svg>Try again</button>
+          <button class="btn btn--secondary" data-go="flash" type="button">Flashcards</button>
+          <button class="btn btn--secondary" data-go="home" type="button">Back to home</button>
+        </div>
+      </div>
+    </section>
+  </main>
+<div class="alert alert--info toast" id="toast" role="status" hidden><svg class="icon"><use href="#i-info"/></svg><p id="toastmsg"></p></div>
+</div>
+
+<script>
+/* Module = what ships in the file: prompts, salts, hashes. No plaintext answers.
+   hash = SHA256(question id : normalized answer : salt). Verified here with Web Crypto, fully local. */
+const MOD={qs:[
+ {id:"q1",kind:"multiple_choice",prompt:"Which gas do plants take in?",options:["Oxygen","Carbon Dioxide","Nitrogen","Hydrogen"],salt:"7f0548fab003",hash:"72c9c0971b05156f8f4d815e06f45d484fa0be3ecb90f81dabc0d166d01f7279"},
+ {id:"q2",kind:"true_false",prompt:"Photosynthesis happens mostly in the roots.",options:["True","False"],salt:"5d7d5da539bd",hash:"b3be76aa9711ba922f22c78221d89912d4f633a2d3c323992ec7a360576b5e36"},
+ {id:"q3",kind:"identification",prompt:"What green pigment captures sunlight?",salt:"967295eda2f4",hash:"8f03b5b51bc320ef2b591067a8353c102ef16d2997eb857d26a53b63cad19365"}]};
+const norm=s=>s.toLowerCase().trim().replace(/[\p{P}]/gu,"");
+async function check(q,raw){
+  const d=new TextEncoder().encode(`${q.id}:${norm(raw)}:${q.salt}`);
+  const h=new Uint8Array(await crypto.subtle.digest("SHA-256",d));
+  return [...h].map(b=>b.toString(16).padStart(2,"0")).join("")===q.hash;
+}
+const $=id=>document.getElementById(id);
+const views=["login","home","subject","lesson","quiz","result","flash","teacher","settings"];
+const show=v=>{views.forEach(x=>$(x).hidden=x!==v);document.querySelector(".stage").dataset.v=v;if(v==="flash"){fi=0;fb=false;rf()}scrollTo(0,0)};
+let i=0,answers=[];
+
+function render(){
+  const q=MOD.qs[i],n=MOD.qs.length;
+  $("qcount").textContent=`Question ${i+1} of ${n}`;
+  $("q-prompt").textContent=q.prompt;
+  const p=$("prog");p.setAttribute("aria-valuenow",i+1);p.setAttribute("aria-label",`Question ${i+1} of ${n}`);
+  p.firstElementChild.style.width=((i+1)/n*100)+"%";
+  const body=$("qbody");body.textContent="";
+  if(q.kind==="identification"){
+    const l=document.createElement("label");l.className="label";l.htmlFor="ans";l.textContent="Your answer";
+    const inp=document.createElement("input");inp.className="input";inp.id="ans";inp.type="text";inp.autocomplete="off";inp.spellcheck=false;
+    const h=document.createElement("p");h.className="hint";h.textContent="Capitalization and punctuation don't matter.";
+    inp.addEventListener("input",()=>{answers[i]=inp.value;$("next").disabled=!inp.value.trim()});
+    body.append(l,inp,h);
+    inp.value=answers[i]||"";
+  }else{
+    const list=document.createElement("div");list.className="option-list"+(q.kind==="true_false"?" option-list--pair":"");
+    list.setAttribute("role","radiogroup");list.setAttribute("aria-labelledby","q-prompt");
+    q.options.forEach((o,k)=>{
+      const r=document.createElement("input");r.type="radio";r.className="option-input";r.name=q.id;r.id=`${q.id}-${k}`;r.value=o;r.checked=answers[i]===o;
+      r.addEventListener("change",()=>{answers[i]=o;$("next").disabled=false});
+      const l=document.createElement("label");l.className="option";l.htmlFor=r.id;
+      const m=document.createElement("span");m.className="option__mark";
+      const t=document.createElement("span");t.textContent=o;
+      l.append(m,t);list.append(r,l);
+    });
+    body.append(list);
+  }
+  $("next").textContent=i===n-1?"Submit answers":"Next question";
+  $("next").disabled=!(answers[i]&&String(answers[i]).trim());
+}
+async function finish(){
+  const res=await Promise.all(MOD.qs.map((q,k)=>check(q,answers[k]||"")));
+  const score=res.filter(Boolean).length,n=MOD.qs.length,pct=Math.round(score/n*100);
+  $("rtitle").textContent=`${score} of ${n} correct`;
+  const rv=$("review");rv.textContent="";
+  res.forEach((ok,k)=>{
+    const li=document.createElement("li");
+    li.innerHTML=`<svg class="icon ${ok?"ok":"no"}"><use href="#i-${ok?"ok":"no"}"/></svg>`;
+    const s=document.createElement("span");s.textContent=MOD.qs[k].prompt;
+    const b=document.createElement("b");b.className=ok?"ok":"no";b.textContent=ok?"Correct":"Not quite";
+    li.append(s,b);rv.append(li);
+  });
+  show("result");
+  // the one orchestrated moment: count-up
+  const t0=performance.now(),dur=900,ring=$("ring"),num=$("num");
+  const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  (function step(t){const f=reduce?1:Math.min(1,(t-t0)/dur),e=1-Math.pow(1-f,3),v=Math.round(pct*e);
+    ring.style.setProperty("--pct",v);num.textContent=v;if(f<1)requestAnimationFrame(step)})(t0);
+}
+const start=()=>{i=0;answers=[];show("quiz");render();$("q-prompt").scrollIntoView({block:"nearest"})};
+$("retry").onclick=start;
+let nt;const note=m=>{$("toastmsg").textContent=m||"This button isn't wired up in the sample.";$("toast").hidden=false;clearTimeout(nt);nt=setTimeout(()=>$("toast").hidden=true,2400)};
+document.addEventListener("click",e=>{const b=e.target.closest("[data-go],[data-todo],[data-act],[data-subj]");if(!b)return;if(b.closest("#menu")){setMenu(false);pinned=false}
+  if(b.dataset.go){if(b.dataset.go==="home"&&!document.body.dataset.auth)return;show(b.dataset.go)}
+  else if(b.dataset.subj)openSubject(b.dataset.subj);else if(b.dataset.act==="quiz")start();else note(b.dataset.todo)});
+// Subjects (name → badge code + modules [title, meta, wired?])
+const SUBJ={"Mathematics":{code:"MA",mods:[["Fractions: Halves and Quarters","Grade 3 · 5 questions",false]]},"Science":{code:"SC",mods:[["Photosynthesis Basics","Elementary · 3 questions",true]]},"English":{code:"EN",mods:[]},"Filipino":{code:"FI",mods:[]},"Araling Panlipunan":{code:"AP",mods:[]},"MAPEH":{code:"MP",mods:[]}};
+Object.entries(SUBJ).forEach(([n,d])=>{const b=document.createElement("button");b.className="subj";b.type="button";b.dataset.subj=n;
+  b.innerHTML='<span class="subj__badge" aria-hidden="true"></span><span><b></b><span class="muted small"></span></span>';
+  b.querySelector(".subj__badge").textContent=d.code;b.querySelector("b").textContent=n;
+  b.querySelector(".small").textContent=d.mods.length?`${d.mods.length} module${d.mods.length>1?"s":""}`:"No modules yet";$("subjgrid").append(b);
+  const m=document.createElement("button");m.className="mi mi--s";m.type="button";m.dataset.subj=n;m.innerHTML='<span class="subj__badge" aria-hidden="true"></span><span></span>';
+  m.firstChild.textContent=d.code;m.lastChild.textContent=n;$("msubj").append(m)});
+// Acassist hover menu: hover opens (mouse), click pins / toggles (touch, keyboard), Esc or outside click closes
+const nw=$("navwrap"),bb=$("brandbtn"),mp=$("menu");let pinned=false,mt;
+const setMenu=o=>{if(o&&!document.body.dataset.auth)return;mp.hidden=!o;bb.setAttribute("aria-expanded",String(o))};
+nw.addEventListener("pointerenter",e=>{if(e.pointerType==="mouse"){clearTimeout(mt);setMenu(true)}});
+nw.addEventListener("pointerleave",e=>{if(e.pointerType==="mouse"&&!pinned){mt=setTimeout(()=>setMenu(false),200)}});
+bb.addEventListener("click",()=>{if(mp.hidden){setMenu(true);pinned=true}else if(pinned){setMenu(false);pinned=false}else pinned=true});
+document.addEventListener("pointerdown",e=>{if(!nw.contains(e.target)){setMenu(false);pinned=false}});
+document.addEventListener("focusin",e=>{if(!nw.contains(e.target)){setMenu(false);pinned=false}});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!mp.hidden){setMenu(false);pinned=false;bb.focus()}});
+function openSubject(n){const d=SUBJ[n],box=$("smods");$("sname").textContent=n;$("scrumb").textContent=n;box.textContent="";
+  if(!d.mods.length){const p=document.createElement("p");p.className="muted";p.textContent="No modules yet. Open a module file to add one.";box.append(p)}
+  d.mods.forEach(([t,meta,live])=>{const el=document.createElement("div");el.className="tile stack";el.style.setProperty("--stack-gap",".75rem");
+    el.innerHTML='<div class="row between"><h3></h3><span class="chip chip--ok">Ready offline</span></div><p class="muted small"></p><div class="tags"></div>';
+    el.querySelector("h3").textContent=t;el.querySelector("p").textContent=meta;
+    [["Lesson","go","lesson"],["Start quiz","act","quiz"],["Flashcards","go","flash"]].forEach(([l,k,v],j)=>{const b=document.createElement("button");b.type="button";b.className="btn btn--sm"+(j===1?"":" btn--secondary");b.textContent=l;
+      if(live)b.dataset[k==="go"?"go":"act"]=v;else b.dataset.todo="";el.querySelector(".tags").append(b)});box.append(el)});
+  show("subject")}
+const bindFind=(inp,ul)=>inp.oninput=e=>{const q=e.target.value.trim().toLowerCase();ul.textContent="";if(!q){ul.hidden=true;return}
+  const hits=[];Object.entries(SUBJ).forEach(([n,d])=>{if(n.toLowerCase().includes(q))hits.push([n,"Subject",n]);d.mods.forEach(m=>{if(m[0].toLowerCase().includes(q))hits.push([m[0],"Module in "+n,n])})});
+  if(!hits.length){const li=document.createElement("li");li.textContent="Nothing found. Try a subject name.";ul.append(li)}
+  hits.forEach(([t,k,n])=>{const li=document.createElement("li"),sp=document.createElement("span"),b=document.createElement("b"),o=document.createElement("button");
+    sp.textContent=t;b.textContent=k;o.type="button";o.className="btn btn--secondary btn--sm";o.dataset.subj=n;o.textContent="Open";li.append(sp,b,o);ul.append(li)});
+  ul.hidden=false};bindFind($("find"),$("found"));bindFind($("mfind"),$("mfound"));
+const enter=r=>{document.body.dataset.auth="1";document.body.dataset.role=r;show("home")};
+$("signin").onclick=()=>enter(document.querySelector('input[name="role"]:checked').value);
+$("guest").onclick=()=>enter("student");
+$("signout").onclick=()=>{setMenu(false);pinned=false;delete document.body.dataset.auth;show("login")};
+// Flashcards: front = prompt, back = teacher explanation
+const FL=[["Which gas do plants take in?","Plants take in carbon dioxide from the air to make food."],["Photosynthesis happens mostly in the roots.","False. It happens mostly in the leaves."],["What green pigment captures sunlight?","Chlorophyll, the green pigment in leaves."]];
+let fi=0,fb=false;
+const rf=()=>{$("flip").textContent=FL[fi][fb?1:0];$("fcount").textContent=`Card ${fi+1} of ${FL.length}`;$("fside").textContent=fb?"Explanation":"Question"};
+$("flip").onclick=$("fflip").onclick=()=>{fb=!fb;rf()};
+$("fprev").onclick=()=>{fi=(fi+FL.length-1)%FL.length;fb=false;rf()};
+$("fnext").onclick=()=>{fi=(fi+1)%FL.length;fb=false;rf()};
+// Teacher: fake AI draft
+$("gen").onclick=()=>{const g=$("gen");g.disabled=true;g.lastChild.textContent="Generating…";setTimeout(()=>{$("preview").hidden=false;g.disabled=!navigator.onLine;g.lastChild.textContent="Generate with AI";$("preview").scrollIntoView({behavior:"smooth",block:"nearest"})},800)};
+$("next").onclick=()=>{if(i<MOD.qs.length-1){i++;render()}else finish()};
+
+// Connection chip: offline is the normal state, never an error
+const chip=$("chip"),sync=()=>{const on=navigator.onLine;chip.dataset.conn=on?"online":"offline";
+  chip.firstElementChild.firstElementChild.setAttribute("href",on?"#i-wifi":"#i-wifi-off");
+  chip.lastElementChild.textContent=on?"Online · AI ready":"Offline · everything works";$("gen").disabled=!on;$("offnote").hidden=on};
+addEventListener("online",sync);addEventListener("offline",sync);sync();
+
+// Settings switches: performance mode (no blur) + large text (elementary tokens)
+const R=document.documentElement,sl=$("s-lite"),sg=$("s-large");
+try{sl.checked=localStorage.getItem("fx")==="lite"}catch(e){}
+const applyFx=()=>{R.dataset.fx=sl.checked?"lite":"full";R.dataset.grade=sg.checked?"elementary":"";try{localStorage.setItem("fx",sl.checked?"lite":"full")}catch(e){}};
+sl.onchange=sg.onchange=applyFx;applyFx();show("login");
+</script>
+</body>
+</html>
